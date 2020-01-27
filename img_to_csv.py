@@ -5,6 +5,7 @@ import sys
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--image_file', required=True)
 parser.add_argument('-o', '--output_csv', required=True)
+parser.add_argument('--rgb', action='store_true')
 args = parser.parse_args(sys.argv[1:])
 
 im = Image.open(args.image_file)
@@ -17,6 +18,8 @@ with open(args.output_csv, 'w+') as f:
         row = []
         for x in range(width):
             pixel = list(map(str, pix[x, y][:3]))
+            if not args.rgb:
+                pixel.reverse()
             row.append(pixel)
 
         f.write(','.join([item for sublist in row for item in sublist]))
